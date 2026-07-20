@@ -168,10 +168,10 @@ Build each component in isolation (a throwaway page or Storybook-less manual che
 | `ToggleRow` | `/components/ui/ToggleRow.tsx` | `{ label: string; checked: boolean; onChange: (v: boolean) => void }` |
 | `FormField` wrappers | `/components/ui/form/*.tsx` | thin wrappers around shadcn `Input`, `Select`, `Textarea`, `DatePicker`, `FileUpload` — each takes `{ label, name, value, onChange, error? }` |
 
-- [ ] Build all components above
-- [ ] Each accepts a `className` passthrough for layout composition
-- [ ] `DataTable` supports empty state via `emptyMessage`
-- [ ] `Drawer` traps focus and closes on `Escape` + backdrop click
+- [x] Build all components above
+- [x] Each accepts a `className` passthrough for layout composition
+- [x] `DataTable` supports empty state via `emptyMessage`
+- [x] `Drawer` traps focus and closes on `Escape` + backdrop click
 
 **Definition of Done — Phase 2:** every component above renders correctly with placeholder/sample props on a scratch page; no tab-specific logic lives inside these files.
 
@@ -423,36 +423,36 @@ export interface CommunicationLog {
 }
 ```
 
-- [ ] Create every file above exactly as specified
-- [ ] Create `/types/index.ts` re-exporting everything
+- [x] Create every file above exactly as specified
+- [x] Create `/types/index.ts` re-exporting everything
 
 #### 3B. Fixture Data (`/data/*.ts`)
 
-- [ ] `students.ts` — 40–60 `Student` records, spread across at least 3 departments, 3 courses, sections A/B/C, with a realistic mix of `status` values (mostly `active`, a few `fee-due`, 1–2 `suspended`)
-- [ ] `groups.ts` — one `Group` per department/course/semester/section actually used in `students.ts`, plus a handful of subject/practical/tutorial/club/sports groups with sensible `studentIds` subsets
-- [ ] `attendance.ts` — `AttendanceRecord[]` covering the last 14 days for all students (daily) plus a subset of subject-wise records
-- [ ] `leaves.ts` — 10–15 `LeaveRecord`s in a mix of statuses
-- [ ] `subjects.ts`, `faculty.ts`, `timetable.ts`, `materials.ts` — enough to populate one full weekly timetable per section and a handful of course materials per subject
-- [ ] `exams.ts`, `marks.ts`, `results.ts` — one upcoming exam cycle (some `scheduled`, some `confirmed`) plus one completed cycle with full `MarkEntry`/`SemesterResult` data
-- [ ] `fee-structure.ts`, `fee-collections.ts`, `dues.ts`, `scholarships.ts` — fee structure per course/semester, collections for most students, dues for the `fee-due`/`suspended` students, a few scholarships
-- [ ] `library.ts` — 20–30 `Book`s, a mix of active `BookIssue`s (some `overdue`) and returned ones, `Fine`s for overdue issues
-- [ ] `communication.ts` — a handful of `Notice`s and `CommunicationLog`s
+- [x] `students.ts` — 40–60 `Student` records, spread across at least 3 departments, 3 courses, sections A/B/C, with a realistic mix of `status` values (mostly `active`, a few `fee-due`, 1–2 `suspended`)
+- [x] `groups.ts` — one `Group` per department/course/semester/section actually used in `students.ts`, plus a handful of subject/practical/tutorial/club/sports groups with sensible `studentIds` subsets
+- [x] `attendance.ts` — `AttendanceRecord[]` covering the last 14 days for all students (daily) plus a subset of subject-wise records
+- [x] `leaves.ts` — 10–15 `LeaveRecord`s in a mix of statuses
+- [x] `subjects.ts`, `faculty.ts`, `timetable.ts`, `materials.ts` — enough to populate one full weekly timetable per section and a handful of course materials per subject
+- [x] `exams.ts`, `marks.ts`, `results.ts` — one upcoming exam cycle (some `scheduled`, some `confirmed`) plus one completed cycle with full `MarkEntry`/`SemesterResult` data
+- [x] `fee-structure.ts`, `fee-collections.ts`, `dues.ts`, `scholarships.ts` — fee structure per course/semester, collections for most students, dues for the `fee-due`/`suspended` students, a few scholarships
+- [x] `library.ts` — 20–30 `Book`s, a mix of active `BookIssue`s (some `overdue`) and returned ones, `Fine`s for overdue issues
+- [x] `communication.ts` — a handful of `Notice`s and `CommunicationLog`s
 
 All monetary fields are integers. All IDs are stable strings (e.g. `stu_001`, `bk_014`) so cross-references between fixture files are easy to read.
 
 #### 3C. Zustand Store (`/store/useAppStore.ts`)
 
-- [ ] 1. One store, slice pattern — one slice file per domain under `/store/slices/`: `studentsSlice.ts`, `groupsSlice.ts`, `attendanceSlice.ts`, `academicsSlice.ts`, `examsSlice.ts`, `feesSlice.ts`, `librarySlice.ts`, `communicationSlice.ts`
-- [ ] 2. Each slice exposes: initial state = matching fixture array, `add<Entity>(data: Omit<T,'id'>): void` (generates id), `update<Entity>(id: string, data: Partial<T>): void`
-- [ ] 3. Combine slices in `useAppStore.ts` via Zustand's `persist` middleware:
+- [x] 1. One store, slice pattern — one slice file per domain under `/store/slices/`: `studentsSlice.ts`, `groupsSlice.ts`, `attendanceSlice.ts`, `academicsSlice.ts`, `examsSlice.ts`, `feesSlice.ts`, `librarySlice.ts`, `communicationSlice.ts`
+- [x] 2. Each slice exposes: initial state = matching fixture array, `add<Entity>(data: Omit<T,'id'>): void` (generates id), `update<Entity>(id: string, data: Partial<T>): void`
+- [x] 3. Combine slices in `useAppStore.ts` via Zustand's `persist` middleware:
    ```ts
    persist(
      (...a) => ({ ...createStudentsSlice(...a), ...createGroupsSlice(...a), /* etc */ }),
      { name: "campus-ledger-storage", storage: createJSONStorage(() => localStorage), version: 1 }
    )
    ```
-- [ ] 4. Add `resetToSampleData(): void` at the top level of the store — clears persisted state and re-seeds every slice from its fixture file
-- [ ] 5. Add a `<ResetButton />` component (`/components/ui/ResetButton.tsx`) that calls `resetToSampleData()` with a confirmation prompt; place it in the top bar
+- [x] 4. Add `resetToSampleData(): void` at the top level of the store — clears persisted state and re-seeds every slice from its fixture file
+- [x] 5. Add a `<ResetButton />` component (`/components/ui/ResetButton.tsx`) that calls `resetToSampleData()` with a confirmation prompt; place it in the top bar
 
 **Definition of Done — Phase 3:** `useAppStore` compiles with no `any`, every fixture file matches its type exactly, refreshing the browser after adding a test record (e.g. via browser devtools console calling an action) preserves the data, and the reset button restores the original fixtures.
 
@@ -463,23 +463,23 @@ All monetary fields are integers. All IDs are stable strings (e.g. `stu_001`, `b
 Build in this order. For each tab: wire the layout from `UI_LAYOUT.md`, connect real store data, implement every "add" flow listed, and confirm before moving on.
 
 #### 4.1 Dashboard (`/components/tabs/DashboardView.tsx`)
-- [ ] Stat cards computed from store: student count, today's attendance % (from `attendanceSlice`), sum of `feeCollections` this term, faculty count
-- [ ] 7-day `BarChart` from `attendanceSlice`
-- [ ] Recent activity feed — merge latest `feeCollections` + `communicationLog` entries, sorted by date, capped at ~6
-- [ ] Departments-requiring-attention table — computed: attendance < 80% or dues > 0, grouped by department
+- [x] Stat cards computed from store: student count, today's attendance % (from `attendanceSlice`), sum of `feeCollections` this term, faculty count
+- [x] 7-day `BarChart` from `attendanceSlice`
+- [x] Recent activity feed — merge latest `feeCollections` + `communicationLog` entries, sorted by date, capped at ~6
+- [x] Departments-requiring-attention table — computed: attendance < 80% or dues > 0, grouped by department
 
 #### 4.2 Students (`/components/tabs/StudentsView.tsx`)
-- [ ] `DataTable` of all students with search (name/roll/admission no.) + department/status filters
-- [ ] Row click opens `Drawer` → Student Profile: Personal Details card + Academic Details card, all fields from §1.2 rendered read-only, with an "Edit" toggle that turns fields into form inputs and calls `updateStudent`
-- [ ] "Add Student" button opens a form (same field set) → calls `addStudent`
-- [ ] Groups & Batches section: card grid, one card per `GroupType`, listing groups of that type with member counts; clicking a group filters the directory table to its members
+- [x] `DataTable` of all students with search (name/roll/admission no.) + department/status filters
+- [x] Row click opens `Drawer` → Student Profile: Personal Details card + Academic Details card, all fields from §1.2 rendered read-only, with an "Edit" toggle that turns fields into form inputs and calls `updateStudent`
+- [x] "Add Student" button opens a form (same field set) → calls `addStudent`
+- [x] Groups & Batches section: card grid, one card per `GroupType`, listing groups of that type with member counts; clicking a group filters the directory table to its members
 
 #### 4.3 Attendance (`/components/tabs/AttendanceView.tsx`)
-- [ ] Filter toolbar: department/class/date, drives all cards below
-- [ ] Daily Attendance table (class, present, total, %) — row click opens drawer with per-student list for that class/date, each row has present/absent/leave toggle that calls an attendance action
-- [ ] Subject-wise Attendance table
-- [ ] Monthly Report — `BarChart` of attendance % per day for the selected month
-- [ ] Leave Records table with an "Add Leave" form (studentId, fromDate, toDate, reason)
+- [x] Filter toolbar: department/class/date, drives all cards below
+- [x] Daily Attendance table (class, present, total, %) — row click opens drawer with per-student list for that class/date, each row has present/absent/leave toggle that calls an attendance action
+- [x] Subject-wise Attendance table
+- [x] Monthly Report — `BarChart` of attendance % per day for the selected month
+- [x] Leave Records table with an "Add Leave" form (studentId, fromDate, toDate, reason)
 
 #### 4.4 Academics (`/components/tabs/AcademicsView.tsx`)
 - [ ] Subject List table with "Add Subject" form

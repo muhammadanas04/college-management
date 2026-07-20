@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { pageMeta } from "@/lib/page-meta";
+import { ResetButton } from "./ResetButton";
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -36,8 +37,9 @@ export function TopBar({ onMenuClick }: TopBarProps) {
       </div>
       
       <div className="ml-auto flex items-center gap-4">
-        {/* Reset button will go here later in Phase 3 */}
+        <ResetButton />
       </div>
     </header>
   );
 }
+
