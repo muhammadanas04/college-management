@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/form/Input";
 import { Select } from "@/components/ui/form/Select";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { FunnelChart } from "@/components/ui/FunnelChart";
+import { getStatusCategory } from "@/lib/status-colors";
 import { Exam, MarkEntry, SemesterResult, SubjectResult } from "@/types/exam";
 
 export default function ExamsView() {
@@ -70,10 +71,10 @@ export default function ExamsView() {
               key: "status", 
               header: "Status",
               render: (row: Exam) => (
-                <StatusPill 
-                  status={row.status === "completed" ? "good" : "warn"}
-                  label={row.status}
-                />
+                  <StatusPill 
+                    status={getStatusCategory(row.status)}
+                    label={row.status}
+                  />
               )
             },
             {
@@ -194,7 +195,7 @@ export default function ExamsView() {
                 header: "Status",
                 render: (row: SemesterResult) => (
                   <StatusPill 
-                    status={row.resultStatus === "pass" ? "good" : row.resultStatus === "fail" ? "bad" : "warn"}
+                    status={getStatusCategory(row.resultStatus)}
                     label={row.resultStatus}
                   />
                 )
@@ -219,7 +220,7 @@ export default function ExamsView() {
                     <div className="text-right">
                       <div className="text-sm font-semibold">SGPA: {res.sgpa.toFixed(2)}</div>
                       <StatusPill 
-                        status={res.resultStatus === "pass" ? "good" : res.resultStatus === "fail" ? "bad" : "warn"}
+                        status={getStatusCategory(res.resultStatus)}
                         label={res.resultStatus}
                       />
                     </div>
@@ -280,7 +281,7 @@ export default function ExamsView() {
               { label: "Semester", value: "semester" }
             ]}
           />
-          <Input type="number" label="Max Marks" name="maxMarks" required />
+          <Input type="number" min="1" label="Max Marks" name="maxMarks" required />
           <Input label="Room (Optional)" name="room" />
           <Input label="Invigilator (Optional)" name="invigilator" />
           <Select 

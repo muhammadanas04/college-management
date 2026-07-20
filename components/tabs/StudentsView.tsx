@@ -8,6 +8,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { Input } from "@/components/ui/form/Input";
 import { Select } from "@/components/ui/form/Select";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { getStatusCategory } from "@/lib/status-colors";
 import { Student, StudentStatus } from "@/types/student";
 
 export default function StudentsView() {
@@ -119,16 +120,16 @@ export default function StudentsView() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Full Name" name="fullName" defaultValue={initialData?.fullName} required />
             <Input label="Admission No" name="admissionNo" defaultValue={initialData?.admissionNo} required />
-            <Input label="Father's Name" name="fathersName" defaultValue={initialData?.fathersName} />
-            <Input label="Mother's Name" name="mothersName" defaultValue={initialData?.mothersName} />
-            <Input type="date" label="DOB" name="dob" defaultValue={initialData?.dob} />
-            <Select label="Gender" name="gender" defaultValue={initialData?.gender || ""} options={[{label:"Male", value:"Male"}, {label:"Female", value:"Female"}, {label:"Other", value:"Other"}]} />
-            <Select label="Category" name="category" defaultValue={initialData?.category || ""} options={[{label:"General", value:"General"}, {label:"OBC", value:"OBC"}, {label:"SC", value:"SC"}, {label:"ST", value:"ST"}, {label:"EWS", value:"EWS"}]} />
-            <Input label="Blood Group" name="bloodGroup" defaultValue={initialData?.bloodGroup} />
-            <Input label="Aadhaar Number" name="aadhaarNumber" defaultValue={initialData?.aadhaarNumber} />
-            <Input type="tel" label="Mobile Number" name="mobileNumber" defaultValue={initialData?.mobileNumber} />
-            <Input type="email" label="Email ID" name="email" defaultValue={initialData?.email} />
-            <Input label="Address" name="address" defaultValue={initialData?.address} />
+            <Input label="Father's Name" name="fathersName" defaultValue={initialData?.fathersName} required />
+            <Input label="Mother's Name" name="mothersName" defaultValue={initialData?.mothersName} required />
+            <Input type="date" label="DOB" name="dob" defaultValue={initialData?.dob} required />
+            <Select label="Gender" name="gender" defaultValue={initialData?.gender || ""} options={[{label:"Male", value:"Male"}, {label:"Female", value:"Female"}, {label:"Other", value:"Other"}]} required />
+            <Select label="Category" name="category" defaultValue={initialData?.category || ""} options={[{label:"General", value:"General"}, {label:"OBC", value:"OBC"}, {label:"SC", value:"SC"}, {label:"ST", value:"ST"}, {label:"EWS", value:"EWS"}]} required />
+            <Input label="Blood Group" name="bloodGroup" defaultValue={initialData?.bloodGroup} required />
+            <Input label="Aadhaar Number" name="aadhaarNumber" defaultValue={initialData?.aadhaarNumber} required />
+            <Input type="tel" label="Mobile Number" name="mobileNumber" defaultValue={initialData?.mobileNumber} required />
+            <Input type="email" label="Email ID" name="email" defaultValue={initialData?.email} required />
+            <Input label="Address" name="address" defaultValue={initialData?.address} required />
             <Input label="Photo URL" name="photoUrl" defaultValue={initialData?.photoUrl} />
           </div>
         </div>
@@ -137,13 +138,13 @@ export default function StudentsView() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Course" name="course" defaultValue={initialData?.course} required />
             <Input label="Department" name="department" defaultValue={initialData?.department} required />
-            <Input label="Branch" name="branch" defaultValue={initialData?.branch} />
+            <Input label="Branch" name="branch" defaultValue={initialData?.branch} required />
             <Input label="Semester/Year" name="semesterOrYear" defaultValue={initialData?.semesterOrYear} required />
-            <Input label="Section" name="section" defaultValue={initialData?.section} />
+            <Input label="Section" name="section" defaultValue={initialData?.section} required />
             <Input label="Roll Number" name="rollNumber" defaultValue={initialData?.rollNumber} required />
-            <Input label="Academic Session" name="academicSession" defaultValue={initialData?.academicSession} />
-            <Input type="date" label="Admission Date" name="admissionDate" defaultValue={initialData?.admissionDate} />
-            <Input label="Previous Qual." name="previousQualification" defaultValue={initialData?.previousQualification} />
+            <Input label="Academic Session" name="academicSession" defaultValue={initialData?.academicSession} required />
+            <Input type="date" label="Admission Date" name="admissionDate" defaultValue={initialData?.admissionDate} required />
+            <Input label="Previous Qual." name="previousQualification" defaultValue={initialData?.previousQualification} required />
             <Select label="Status" name="status" defaultValue={initialData?.status || "active"} options={[{label:"Active", value:"active"}, {label:"Fee Due", value:"fee-due"}, {label:"Suspended", value:"suspended"}]} required />
           </div>
         </div>
@@ -220,7 +221,7 @@ export default function StudentsView() {
                   header: "Status",
                   render: (row: { status: string }) => (
                     <StatusPill 
-                      status={row.status === "active" ? "good" : row.status === "fee-due" ? "warn" : "bad"} 
+                      status={getStatusCategory(row.status)} 
                       label={row.status} 
                     />
                   )

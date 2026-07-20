@@ -7,6 +7,7 @@ import { StatCard } from "@/components/ui/StatCard";
 import { BarChart } from "@/components/ui/BarChart";
 import { DataTable } from "@/components/ui/DataTable";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { getStatusCategory } from "@/lib/status-colors";
 
 export default function DashboardView() {
   const {
@@ -180,7 +181,7 @@ export default function DashboardView() {
               header: "Attendance",
               render: (row: { attendancePercent: number }) => (
                 <StatusPill 
-                  status={row.attendancePercent < 80 ? "bad" : "good"} 
+                  status={getStatusCategory(row.attendancePercent < 80 ? "bad" : "good")} 
                   label={`${row.attendancePercent}%`} 
                 />
               )

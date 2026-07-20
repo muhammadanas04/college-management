@@ -8,6 +8,7 @@ import { StatCard } from "@/components/ui/StatCard";
 import { Drawer } from "@/components/ui/Drawer";
 import { Select } from "@/components/ui/form/Select";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { getStatusCategory } from "@/lib/status-colors";
 import { FeeStructureEntry, DueEntry, FeeCollection, Scholarship } from "@/types/fees";
 import { pdf } from "@react-pdf/renderer";
 import { ReceiptTemplate } from "@/components/pdf/ReceiptTemplate";
@@ -146,8 +147,9 @@ export default function FeesView() {
               key: "status", 
               header: "Status",
               render: (row: DueEntry) => {
-                if (row.amountDue === 0) return <StatusPill status="good" label="Cleared" />;
-                return <StatusPill status={row.daysOverdue > 0 ? "bad" : "warn"} label={row.daysOverdue > 0 ? `${row.daysOverdue} days overdue` : "Pending"} />;
+                if (row.amountDue === 0) return <StatusPill status={getStatusCategory("cleared")} label="Cleared" />;
+                const label = row.daysOverdue > 0 ? `${row.daysOverdue} days overdue` : "Pending";
+                return <StatusPill status={getStatusCategory(row.daysOverdue > 0 ? "overdue" : "pending")} label={label} />;
               }
             },
             {
@@ -190,7 +192,7 @@ export default function FeesView() {
               header: "Status",
               render: (row: Scholarship) => (
                 <StatusPill 
-                  status={row.status === "disbursed" ? "good" : row.status === "applied" ? "warn" : "good"}
+                  status={getStatusCategory(row.status)}
                   label={row.status}
                 />
               )

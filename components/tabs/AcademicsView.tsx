@@ -271,7 +271,7 @@ export default function AcademicsView() {
             options={subjects.map(s => ({ label: `${s.code} - ${s.name}`, value: s.id }))}
           />
           <Input type="date" label="Due Date (Optional)" name="dueDate" />
-          <Input label="File URL (Optional)" name="fileUrl" />
+          <Input type="url" label="File URL (Optional)" name="fileUrl" />
           <div className="flex justify-end pt-4">
             <button type="submit" className="bg-primary text-primary-foreground px-4 py-2 rounded text-sm hover:bg-primary/90 transition-colors">
               Save Material

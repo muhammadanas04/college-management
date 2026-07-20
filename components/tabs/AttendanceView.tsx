@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/form/Input";
 import { Select } from "@/components/ui/form/Select";
 import { BarChart } from "@/components/ui/BarChart";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { getStatusCategory } from "@/lib/status-colors";
 import { AttendanceStatus } from "@/types/attendance";
 
 export default function AttendanceView() {
@@ -234,7 +235,7 @@ export default function AttendanceView() {
                 header: "Percentage",
                 render: (row: { percent: number }) => (
                   <StatusPill 
-                    status={row.percent >= 80 ? "good" : row.percent >= 60 ? "warn" : "bad"} 
+                    status={getStatusCategory(row.percent >= 80 ? "good" : row.percent >= 60 ? "warn" : "bad")} 
                     label={`${row.percent}%`} 
                   />
                 )
@@ -258,7 +259,7 @@ export default function AttendanceView() {
                 header: "Percentage",
                 render: (row: { percent: number }) => (
                   <StatusPill 
-                    status={row.percent >= 80 ? "good" : row.percent >= 60 ? "warn" : "bad"} 
+                    status={getStatusCategory(row.percent >= 80 ? "good" : row.percent >= 60 ? "warn" : "bad")} 
                     label={`${row.percent}%`} 
                   />
                 )
@@ -297,7 +298,7 @@ export default function AttendanceView() {
               header: "Status",
               render: (row: { status: string }) => (
                 <StatusPill 
-                  status={row.status === "approved" ? "good" : row.status === "pending" ? "warn" : "bad"} 
+                  status={getStatusCategory(row.status)} 
                   label={row.status} 
                 />
               )

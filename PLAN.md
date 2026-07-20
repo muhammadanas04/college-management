@@ -482,46 +482,46 @@ Build in this order. For each tab: wire the layout from `UI_LAYOUT.md`, connect 
 - [x] Leave Records table with an "Add Leave" form (studentId, fromDate, toDate, reason)
 
 #### 4.4 Academics (`/components/tabs/AcademicsView.tsx`)
-- [ ] Subject List table with "Add Subject" form
-- [ ] Faculty Allocation table (faculty → subjects), with reassign action
-- [ ] Timetable grid (days × time slots), populated from `timetable.ts`
-- [ ] Course Materials table with type filter (Notes/Assignments/Homework/Study Material) and an "Add Material" form matching `CourseMaterial`
+- [x] Subject List table with "Add Subject" form
+- [x] Faculty Allocation table (faculty → subjects), with reassign action
+- [x] Timetable grid (days × time slots), populated from `timetable.ts`
+- [x] Course Materials table with type filter (Notes/Assignments/Homework/Study Material) and an "Add Material" form matching `CourseMaterial`
 
 #### 4.5 Examinations (`/components/tabs/ExamsView.tsx`)
-- [ ] Exam Schedule table with status pill (scheduled/confirmed/completed) and an "Add Exam" form
-- [ ] Marks entry: pick an exam → table of students with an editable `marksObtained` cell, saves via a `MarkEntry` action
-- [ ] Result Processing `FunnelChart` (graded → moderated → published) — can be a derived/simulated stat from `results.ts` counts
-- [ ] Semester Results / Grade Card / Result Analysis as tabs within one card, driven by `results.ts`
+- [x] Exam Schedule table with status pill (scheduled/confirmed/completed) and an "Add Exam" form
+- [x] Marks entry: pick an exam → table of students with an editable `marksObtained` cell, saves via a `MarkEntry` action
+- [x] Result Processing `FunnelChart` (graded → moderated → published) — can be a derived/simulated stat from `results.ts` counts
+- [x] Semester Results / Grade Card / Result Analysis as tabs within one card, driven by `results.ts`
 
 #### 4.6 Fees & Ledger (`/components/tabs/FeesView.tsx`)
-- [ ] 3 stat cards: collected this term, outstanding dues, scholarships disbursed (computed from store)
-- [ ] Fee Structure table + Due List table
-- [ ] "Collect Fee" action on a due row → records a `FeeCollection`, removes/reduces the matching `DueEntry`, and opens a receipt view (also the first PDF template, since it's the simplest)
-- [ ] Ledger Transaction Log — full `feeCollections` history, newest first
+- [x] 3 stat cards: collected this term, outstanding dues, scholarships disbursed (computed from store)
+- [x] Fee Structure table + Due List table
+- [x] "Collect Fee" action on a due row → records a `FeeCollection`, removes/reduces the matching `DueEntry`, and opens a receipt view (also the first PDF template, since it's the simplest)
+- [x] Ledger Transaction Log — full `feeCollections` history, newest first
 
 #### 4.7 Library (`/components/tabs/LibraryView.tsx`)
-- [ ] Book Issue/Return table with issue and return actions (return action also settles/creates a `Fine` if overdue)
-- [ ] Fine Details table with a "mark paid" action
+- [x] Book Issue/Return table with issue and return actions (return action also settles/creates a `Fine` if overdue)
+- [x] Fine Details table with a "mark paid" action
 
 #### 4.8 Communication (`/components/tabs/CommunicationView.tsx`)
-- [ ] Notices list + "Compose Notice" form (title, message, audience group, student/parent)
-- [ ] SMS/Email log table, read-only, populated from `communication.ts` + newly composed notices
+- [x] Notices list + "Compose Notice" form (title, message, audience group, student/parent)
+- [x] SMS/Email log table, read-only, populated from `communication.ts` + newly composed notices
 
 #### 4.9 Reports (`/components/tabs/ReportsView.tsx`)
-- [ ] Card grid, one card per report type from §1.9
-- [ ] Each card has a "Download PDF" button that renders the matching `/components/pdf/<ReportName>.tsx` template via `@react-pdf/renderer`'s `pdf().toBlob()` and triggers a download
-- [ ] Student-specific reports (Marksheet, ID Card, Bonafide/Transfer/Character Certificate, Student Profile) need a student picker before generating
+- [x] Card grid, one card per report type from §1.9
+- [x] Each card has a "Download PDF" button that renders the matching `/components/pdf/<ReportName>.tsx` template via `@react-pdf/renderer`'s `pdf().toBlob()` and triggers a download
+- [x] Student-specific reports (Marksheet, ID Card, Bonafide/Transfer/Character Certificate, Student Profile) need a student picker before generating
 
 **Definition of Done — Phase 4:** every tab renders real store data (no hardcoded placeholders left), every "add" flow updates the table without a page reload, and every Reports card produces a downloaded PDF file.
 
 ---
 
 ### Phase 5 — Polish
-- [ ] Empty states for every list/table (uses `DataTable`'s `emptyMessage`)
-- [ ] Form validation on all "add" flows — required fields, sensible input types (date pickers for dates, number inputs for marks/amounts), inline error messages
-- [ ] Consistent `StatusPill` color mapping documented once in `/lib/status-colors.ts` and reused everywhere (don't redefine good/warn/bad per tab)
-- [ ] Verify PDF output for every report type — correct data, no layout overflow, filename includes student name where relevant
-- [ ] Loading/empty guard for `useAppStore` before hydration completes (Zustand persist is async on first load — show a lightweight skeleton instead of a flash of empty state)
+- [x] Empty states for every list/table (uses `DataTable`'s `emptyMessage`)
+- [x] Form validation on all "add" flows — required fields, sensible input types (date pickers for dates, number inputs for marks/amounts), inline error messages
+- [x] Consistent `StatusPill` color mapping documented once in `/lib/status-colors.ts` and reused everywhere (don't redefine good/warn/bad per tab)
+- [x] Verify PDF output for every report type — correct data, no layout overflow, filename includes student name where relevant
+- [x] Loading/empty guard for `useAppStore` before hydration completes (Zustand persist is async on first load — show a lightweight skeleton instead of a flash of empty state)
 
 ---
 
