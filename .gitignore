@@ -18,8 +18,10 @@
 /out/
 /.turbo/
 
-# production
+# production & build outputs
 /build
+/.open-next/
+/.wrangler/
 
 # misc & OS
 .DS_Store
