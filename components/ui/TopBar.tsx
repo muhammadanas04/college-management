@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { pageMeta } from "@/lib/page-meta";
 import { ResetButton } from "./ResetButton";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -36,7 +37,8 @@ export function TopBar({ onMenuClick }: TopBarProps) {
         </h1>
       </div>
       
-      <div className="ml-auto flex items-center gap-4">
+      <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <ResetButton />
       </div>
     </header>
