@@ -156,7 +156,7 @@ export default function FeesView() {
               render: (row: DueEntry) => row.amountDue > 0 && (
                 <button 
                   onClick={() => setSelectedDue(row)}
-                  className="text-primary hover:underline text-sm font-medium"
+                  className="text-primary hover:underline text-sm font-medium min-h-[44px] inline-flex items-center"
                 >
                   Collect Fee
                 </button>

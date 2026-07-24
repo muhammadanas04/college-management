@@ -330,19 +330,19 @@ export default function AttendanceView() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleToggleAttendance(student.id, record?.id, "present")}
-                  className={`px-3 py-1 text-xs rounded-full transition-colors ${record?.status === "present" ? "bg-emerald-500 text-white" : "bg-muted hover:bg-emerald-500/20"}`}
+                  className={`px-4 py-2 min-h-[44px] min-w-[44px] text-sm rounded-full transition-colors ${record?.status === "present" ? "bg-emerald-500 text-white" : "bg-muted hover:bg-emerald-500/20"}`}
                 >
                   Present
                 </button>
                 <button
                   onClick={() => handleToggleAttendance(student.id, record?.id, "absent")}
-                  className={`px-3 py-1 text-xs rounded-full transition-colors ${record?.status === "absent" ? "bg-rose-500 text-white" : "bg-muted hover:bg-rose-500/20"}`}
+                  className={`px-4 py-2 min-h-[44px] min-w-[44px] text-sm rounded-full transition-colors ${record?.status === "absent" ? "bg-rose-500 text-white" : "bg-muted hover:bg-rose-500/20"}`}
                 >
                   Absent
                 </button>
                 <button
                   onClick={() => handleToggleAttendance(student.id, record?.id, "leave")}
-                  className={`px-3 py-1 text-xs rounded-full transition-colors ${record?.status === "leave" ? "bg-amber-500 text-white" : "bg-muted hover:bg-amber-500/20"}`}
+                  className={`px-4 py-2 min-h-[44px] min-w-[44px] text-sm rounded-full transition-colors ${record?.status === "leave" ? "bg-amber-500 text-white" : "bg-muted hover:bg-amber-500/20"}`}
                 >
                   Leave
                 </button>

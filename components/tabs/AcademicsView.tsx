@@ -125,7 +125,7 @@ export default function AcademicsView() {
                       setSelectedFacultyForEdit(row);
                       setIsEditFacultyOpen(true);
                     }}
-                    className="text-primary hover:underline text-sm font-medium"
+                    className="text-primary hover:underline text-sm font-medium min-h-[44px] inline-flex items-center"
                   >
                     Reassign
                   </button>

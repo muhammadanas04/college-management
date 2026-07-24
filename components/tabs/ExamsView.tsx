@@ -85,7 +85,7 @@ export default function ExamsView() {
               render: (row: Exam) => (
                 <button 
                   onClick={() => setSelectedExamForMarks(row)}
-                  className="text-primary hover:underline text-sm font-medium"
+                  className="text-primary hover:underline text-sm font-medium min-h-[44px] inline-flex items-center"
                 >
                   Enter Marks
                 </button>

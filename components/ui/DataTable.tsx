@@ -130,7 +130,7 @@ export function DataTable<T extends { id?: string | number }>({
 
       {/* Pagination — only show if more than one page */}
       {table.getPageCount() > 1 && (
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>
             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}–
             {Math.min(
@@ -143,7 +143,7 @@ export function DataTable<T extends { id?: string | number }>({
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="px-3 py-1.5 border rounded-md text-sm hover:bg-muted disabled:opacity-50 disabled:pointer-events-none transition-colors"
+              className="px-3 py-1.5 border rounded-md text-sm hover:bg-muted disabled:opacity-50 disabled:pointer-events-none transition-colors min-h-[44px]"
             >
               Previous
             </button>
@@ -153,7 +153,7 @@ export function DataTable<T extends { id?: string | number }>({
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="px-3 py-1.5 border rounded-md text-sm hover:bg-muted disabled:opacity-50 disabled:pointer-events-none transition-colors"
+              className="px-3 py-1.5 border rounded-md text-sm hover:bg-muted disabled:opacity-50 disabled:pointer-events-none transition-colors min-h-[44px]"
             >
               Next
             </button>

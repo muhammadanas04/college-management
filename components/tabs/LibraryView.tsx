@@ -148,7 +148,7 @@ export default function LibraryView() {
                 render: (row) => row.status !== "returned" ? (
                   <button
                     onClick={() => handleReturnBook(row)}
-                    className="text-xs bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2 py-1 rounded-md transition-colors"
+                    className="text-xs bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2 py-1 rounded-md transition-colors min-h-[44px] inline-flex items-center"
                   >
                     Return
                   </button>
@@ -181,7 +181,7 @@ export default function LibraryView() {
                 render: (row) => !row.paid ? (
                   <button
                     onClick={() => handleMarkPaid(row.id)}
-                    className="text-xs bg-primary text-primary-foreground hover:bg-primary/90 px-2 py-1 rounded-md transition-colors"
+                    className="text-xs bg-primary text-primary-foreground hover:bg-primary/90 px-2 py-1 rounded-md transition-colors min-h-[44px] inline-flex items-center"
                   >
                     Mark Paid
                   </button>

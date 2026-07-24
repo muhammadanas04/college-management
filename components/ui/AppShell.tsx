@@ -7,6 +7,7 @@ import { CommandPalette } from "./CommandPalette";
 import { Skeleton } from "./Skeleton";
 import { CardSkeleton } from "./CardSkeleton";
 import { StatCardSkeleton } from "./StatCardSkeleton";
+import { BottomNav } from "./BottomNav";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -45,11 +46,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar onMenuClick={() => setSidebarOpen(true)} />
         
-        <main className="flex-1 overflow-y-auto bg-muted/20">
+        <main className="flex-1 overflow-y-auto bg-muted/20 pb-16 lg:pb-0">
           {children}
         </main>
       </div>
       <CommandPalette />
+      <BottomNav />
     </div>
   );
 }
