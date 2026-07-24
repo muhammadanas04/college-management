@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
+import { CommandPalette } from "./CommandPalette";
 import { Loader2 } from "lucide-react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -32,6 +33,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      <CommandPalette />
     </div>
   );
 }

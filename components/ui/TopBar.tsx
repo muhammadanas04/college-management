@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { pageMeta } from "@/lib/page-meta";
 import { ResetButton } from "./ResetButton";
 import { ThemeToggle } from "./ThemeToggle";
@@ -38,6 +38,14 @@ export function TopBar({ onMenuClick }: TopBarProps) {
       </div>
       
       <div className="ml-auto flex items-center gap-2">
+        <button
+          onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+          className="hidden sm:flex items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Search className="h-3.5 w-3.5" />
+          <span>Search...</span>
+          <kbd className="ml-2 text-xs bg-muted px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+        </button>
         <ThemeToggle />
         <ResetButton />
       </div>
