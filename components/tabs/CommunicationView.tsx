@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -92,6 +93,7 @@ export default function CommunicationView() {
     }
 
     setIsComposeOpen(false);
+    toast.success("Notice sent");
   };
 
   return (

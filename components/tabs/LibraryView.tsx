@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -65,6 +66,7 @@ export default function LibraryView() {
     }
 
     setIsIssueDrawerOpen(false);
+    toast.success("Book issued");
   };
 
   const handleReturnBook = (issue: typeof enrichedIssues[0]) => {
@@ -95,10 +97,20 @@ export default function LibraryView() {
     if (book) {
       updateBook(book.id, { copiesAvailable: book.copiesAvailable + 1 });
     }
+    
+    if (returned > due) {
+      const diffTime = Math.abs(returned.getTime() - due.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      const fineAmount = diffDays * 10;
+      toast.success(`Book returned — fine of ₹${fineAmount} created`);
+    } else {
+      toast.success("Book returned");
+    }
   };
 
   const handleMarkPaid = (fineId: string) => {
     updateFine(fineId, { paid: true });
+    toast.success("Fine marked as paid");
   };
 
   return (

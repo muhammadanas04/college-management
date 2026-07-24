@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { Card } from "@/components/ui/Card";
 import { Select } from "@/components/ui/form/Select";
@@ -29,7 +30,7 @@ export default function ReportsView() {
 
   const handleDownload = async (reportId: string, title: string) => {
     if (!selectedStudent) {
-      alert("Please select a student first.");
+      toast.warning("Select a student first");
       return;
     }
 
@@ -57,9 +58,10 @@ export default function ReportsView() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      toast.success("PDF downloaded");
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Failed to generate PDF.");
+      toast.error("Failed to generate PDF");
     } finally {
       setIsGenerating(null);
     }

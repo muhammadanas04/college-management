@@ -140,9 +140,9 @@ export function useEntityLookup<T extends { id: string }>(entities: T[]): Map<st
 
 ### Definition of Done — Phase 0
 
-- [ ] All packages install without errors (`pnpm install` succeeds).
-- [ ] `/lib/platform.ts`, `/lib/format.ts`, `/hooks/useDebounce.ts`, `/hooks/useEntityLookup.ts` all exist and compile with `pnpm exec tsc --noEmit`.
-- [ ] No existing functionality is broken — app runs with `pnpm dev`.
+- [x] All packages install without errors (`pnpm install` succeeds).
+- [x] `/lib/platform.ts`, `/lib/format.ts`, `/hooks/useDebounce.ts`, `/hooks/useEntityLookup.ts` all exist and compile with `pnpm exec tsc --noEmit`.
+- [x] No existing functionality is broken — app runs with `pnpm dev`.
 
 ---
 

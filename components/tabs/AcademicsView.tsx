@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -27,6 +28,7 @@ export default function AcademicsView() {
     const data = Object.fromEntries(formData.entries()) as any;
     addSubject(data);
     setIsAddSubjectOpen(false);
+    toast.success("Subject added");
   };
 
   const handleAddMaterial = (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +40,7 @@ export default function AcademicsView() {
       uploadedDate: new Date().toISOString().split("T")[0],
     });
     setIsAddMaterialOpen(false);
+    toast.success("Course material added");
   };
 
   const handleUpdateFaculty = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,6 +50,7 @@ export default function AcademicsView() {
     const subjectIds = formData.getAll("subjectIds") as string[];
     updateFaculty(selectedFacultyForEdit.id, { subjectIds });
     setIsEditFacultyOpen(false);
+    toast.success("Faculty subjects updated");
   };
 
   const filteredMaterials = useMemo(() => {

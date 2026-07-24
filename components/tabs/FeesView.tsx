@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -76,8 +77,9 @@ export default function FeesView() {
       a.download = `receipt-${receiptNo}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
+      toast.success("Fee collected — receipt downloaded");
     } catch (err) {
-      console.error("Failed to generate PDF", err);
+      toast.error("Failed to generate receipt PDF");
     }
   };
 

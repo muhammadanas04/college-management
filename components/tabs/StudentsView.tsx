@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -56,10 +57,12 @@ export default function StudentsView() {
     if (isNew) {
       addStudent(data);
       setIsAddDrawerOpen(false);
+      toast.success("Student added successfully");
     } else if (selectedStudent) {
       updateStudent(selectedStudent.id, data);
       setIsEditMode(false);
       setSelectedStudent(null);
+      toast.success("Student profile updated");
     }
   };
 

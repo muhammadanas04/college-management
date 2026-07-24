@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -29,6 +30,7 @@ export default function ExamsView() {
       maxMarks: Number(data.maxMarks),
     });
     setIsAddExamOpen(false);
+    toast.success("Exam scheduled");
   };
 
 
@@ -133,6 +135,7 @@ export default function ExamsView() {
                                   if (mark) {
                                     if (mark.marksObtained !== num) {
                                       updateMarkEntry(mark.id, { marksObtained: num });
+                                      toast.success("Marks saved");
                                     }
                                   } else {
                                     addMarkEntry({
@@ -140,6 +143,7 @@ export default function ExamsView() {
                                       studentId: student.id,
                                       marksObtained: num
                                     });
+                                    toast.success("Marks saved");
                                   }
                                 }}
                                 className="w-full rounded border border-input px-2 py-1 text-sm bg-background"

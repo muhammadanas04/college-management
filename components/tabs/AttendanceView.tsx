@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import { DataTable } from "@/components/ui/DataTable";
 import { Card } from "@/components/ui/Card";
@@ -157,6 +158,7 @@ export default function AttendanceView() {
         classSection: selectedClassSection || "Unknown"
       });
     }
+    toast.success("Attendance updated");
   };
 
   const handleAddLeave = (e: React.FormEvent<HTMLFormElement>) => {
@@ -170,6 +172,7 @@ export default function AttendanceView() {
       status: "pending"
     });
     setIsLeaveDrawerOpen(false);
+    toast.success("Leave record added");
   };
 
   const filteredLeaves = useMemo(() => {
