@@ -14,6 +14,7 @@ import { FeeStructureEntry, DueEntry, FeeCollection, Scholarship } from "@/types
 import { pdf } from "@react-pdf/renderer";
 import { ReceiptTemplate } from "@/components/pdf/ReceiptTemplate";
 import { platform } from "@/lib/platform";
+import { formatCurrency } from "@/lib/format";
 
 export default function FeesView() {
   const { 
@@ -88,17 +89,17 @@ export default function FeesView() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard 
           label="Collected This Term" 
-          value={`$${collectedThisTerm.toLocaleString()}`} 
+          value={formatCurrency(collectedThisTerm)} 
           accentColor="#10b981" 
         />
         <StatCard 
           label="Outstanding Dues" 
-          value={`$${outstandingDues.toLocaleString()}`} 
+          value={formatCurrency(outstandingDues)} 
           accentColor={outstandingDues > 0 ? "#f43f5e" : "#10b981"} 
         />
         <StatCard 
           label="Scholarships Disbursed" 
-          value={`$${scholarshipsDisbursed.toLocaleString()}`} 
+          value={formatCurrency(scholarshipsDisbursed)} 
           accentColor="#8b5cf6" 
         />
       </div>
@@ -112,7 +113,7 @@ export default function FeesView() {
             { 
               key: "amount", 
               header: "Amount",
-              render: (row: FeeStructureEntry) => `$${row.amount.toLocaleString()}`
+              render: (row: FeeStructureEntry) => formatCurrency(row.amount)
             }
           ]}
           data={feeStructure}
@@ -136,7 +137,7 @@ export default function FeesView() {
               header: "Amount Due",
               render: (row: DueEntry) => (
                 <span className={row.amountDue > 0 ? "text-rose-500 font-medium" : "text-emerald-500 font-medium"}>
-                  ${row.amountDue.toLocaleString()}
+                  {formatCurrency(row.amountDue)}
                 </span>
               )
             },
@@ -183,7 +184,7 @@ export default function FeesView() {
             { 
               key: "amount", 
               header: "Amount",
-              render: (row: Scholarship) => `$${row.amount.toLocaleString()}`
+              render: (row: Scholarship) => formatCurrency(row.amount)
             },
             { 
               key: "status", 
@@ -214,7 +215,7 @@ export default function FeesView() {
                   </span>
                 </div>
                 <div className="flex flex-col sm:items-end text-left sm:text-right">
-                  <span className="text-sm font-bold text-emerald-600">+${fc.amount.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-emerald-600">+{formatCurrency(fc.amount)}</span>
                   <span className="text-xs text-muted-foreground flex gap-2">
                     <span>{fc.date}</span>
                     <span className="uppercase bg-muted px-1.5 rounded">{fc.mode}</span>
@@ -239,7 +240,7 @@ export default function FeesView() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Amount Due:</span>
-                <span className="font-bold text-rose-600">${selectedDue.amountDue.toLocaleString()}</span>
+                <span className="font-bold text-rose-600">{formatCurrency(selectedDue.amountDue)}</span>
               </div>
             </div>
 

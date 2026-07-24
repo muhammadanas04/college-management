@@ -8,10 +8,17 @@ import { Skeleton } from "./Skeleton";
 import { CardSkeleton } from "./CardSkeleton";
 import { StatCardSkeleton } from "./StatCardSkeleton";
 import { BottomNav } from "./BottomNav";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useRouter } from "next/navigation";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+
+  const router = useRouter();
+  useKeyboardShortcuts({
+    "Escape": () => {}, // Drawer close is already handled per-component
+  });
 
   useEffect(() => {
     setIsHydrated(true);

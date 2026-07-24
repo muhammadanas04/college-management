@@ -10,7 +10,8 @@ import {
   ColumnDef,
 } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronsUpDown, Download } from "lucide-react";
+import { platform } from "@/lib/platform";
 
 interface Column<T> {
   key: string;
@@ -26,6 +27,7 @@ interface DataTableProps<T> {
   className?: string;
   pageSize?: number;
   enableSorting?: boolean;
+  enableExport?: boolean;
 }
 
 export function DataTable<T extends { id?: string | number }>({
@@ -36,8 +38,25 @@ export function DataTable<T extends { id?: string | number }>({
   className,
   pageSize = 10,
   enableSorting = true,
+  enableExport = false,
 }: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const handleExportCSV = () => {
+    const exportableColumns = columns.filter((col) => col.key !== "actions");
+    const headers = exportableColumns.map((col) => `"${col.header}"`).join(",");
+    
+    const rows = data.map((row) => {
+      return exportableColumns.map((col) => {
+        let val = (row as any)[col.key];
+        if (val === null || val === undefined) val = "";
+        return `"${String(val).replace(/"/g, '""')}"`;
+      }).join(",");
+    });
+    
+    const csv = [headers, ...rows].join("\n");
+    platform.downloadFile(new Blob([csv], { type: "text/csv" }), "export.csv");
+  };
 
   const tanstackColumns = useMemo<ColumnDef<T, any>[]>(
     () =>
@@ -66,6 +85,17 @@ export function DataTable<T extends { id?: string | number }>({
 
   return (
     <div className={cn("w-full space-y-3", className)}>
+      {enableExport && (
+        <div className="flex justify-end">
+          <button
+            onClick={handleExportCSV}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-md hover:bg-muted transition-colors min-h-[44px]"
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </button>
+        </div>
+      )}
       <div className="overflow-auto rounded-md border">
         <table className="w-full caption-bottom text-sm">
           <thead className="[&_tr]:border-b">

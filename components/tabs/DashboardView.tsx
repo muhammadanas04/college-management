@@ -8,6 +8,7 @@ import { BarChart } from "@/components/ui/BarChart";
 import { DataTable } from "@/components/ui/DataTable";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { getStatusCategory } from "@/lib/status-colors";
+import { timeAgo, formatCurrency } from "@/lib/format";
 
 export default function DashboardView() {
   const {
@@ -63,7 +64,7 @@ export default function DashboardView() {
       date: fc.date,
       type: "fee",
       title: "Fee Collected",
-      description: `Collected ₹${fc.amount} for receipt ${fc.receiptNo}`,
+      description: `Collected ${formatCurrency(fc.amount)} for receipt ${fc.receiptNo}`,
     }));
     const comms = communicationLogs.map(log => ({
       id: log.id,
@@ -136,7 +137,7 @@ export default function DashboardView() {
         />
         <StatCard 
           label="Fees Collected (Term)" 
-          value={`₹${feesCollected.toLocaleString()}`} 
+          value={formatCurrency(feesCollected)} 
           accentColor="#8b5cf6" 
         />
         <StatCard 
@@ -160,7 +161,7 @@ export default function DashboardView() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold">{activity.title}</span>
                   <span className="text-xs text-muted-foreground">
-                    {new Date(activity.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    {timeAgo(activity.date)}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">{activity.description}</p>
@@ -192,7 +193,7 @@ export default function DashboardView() {
               header: "Total Dues",
               render: (row: { dues: number }) => (
                 <span className={row.dues > 0 ? "text-rose-500 font-medium" : "text-emerald-500 font-medium"}>
-                  ₹{row.dues.toLocaleString()}
+                  {formatCurrency(row.dues)}
                 </span>
               )
             }

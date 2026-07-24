@@ -44,7 +44,7 @@ export default function ReportsView() {
     setIsGenerating(reportId);
 
     try {
-      let doc: JSX.Element;
+      let doc: any;
 
       if (reportId === "student-profile") {
         doc = <GenericReportTemplate title={title} student={selectedStudent} additionalRows={[

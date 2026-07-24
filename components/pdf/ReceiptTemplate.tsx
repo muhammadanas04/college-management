@@ -182,7 +182,7 @@ export const ReceiptTemplate = ({ receiptNo, date, amount, mode, studentName, it
       <View style={{ marginTop: 20 }}>
         <View style={styles.tableHeader}>
           <Text style={styles.tableColDesc}>Description</Text>
-          <Text style={styles.tableColAmt}>Amount ($)</Text>
+          <Text style={styles.tableColAmt}>Amount (₹)</Text>
         </View>
         
         {items && items.length > 0 ? (
@@ -201,7 +201,7 @@ export const ReceiptTemplate = ({ receiptNo, date, amount, mode, studentName, it
         
         <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Total Paid:</Text>
-          <Text style={styles.totalValue}>${amount.toLocaleString()}</Text>
+          <Text style={styles.totalValue}>₹{amount.toLocaleString()}</Text>
         </View>
       </View>
       
