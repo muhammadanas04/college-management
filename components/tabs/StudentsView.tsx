@@ -12,61 +12,7 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { getStatusCategory } from "@/lib/status-colors";
 import { Student, StudentStatus } from "@/types/student";
 
-export default function StudentsView() {
-  const { students, groups, addStudent, updateStudent } = useAppStore();
-  
-  const [searchQuery, setSearchQuery] = useState("");
-  const [deptFilter, setDeptFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [groupFilter, setGroupFilter] = useState("");
-  
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-  
-  const [isAddDrawerOpen, setIsAddDrawerOpen] = useState(false);
-
-  // Departments for filter
-  const departments = useMemo(() => Array.from(new Set(students.map(s => s.department))).filter(Boolean), [students]);
-
-  // Filtered Students
-  const filteredStudents = useMemo(() => {
-    return students.filter(s => {
-      if (deptFilter && s.department !== deptFilter) return false;
-      if (statusFilter && s.status !== statusFilter) return false;
-      if (groupFilter && !s.groupIds.includes(groupFilter)) return false;
-      
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        return s.fullName.toLowerCase().includes(query) || 
-               s.rollNumber.toLowerCase().includes(query) ||
-               s.admissionNo.toLowerCase().includes(query);
-      }
-      return true;
-    });
-  }, [students, searchQuery, deptFilter, statusFilter, groupFilter]);
-
-  // Handle Save (Add/Edit)
-  const handleSaveStudent = (e: React.FormEvent<HTMLFormElement>, isNew: boolean) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries()) as any;
-    
-    // Default groupIds to [] if not provided
-    data.groupIds = selectedStudent?.groupIds || [];
-    
-    if (isNew) {
-      addStudent(data);
-      setIsAddDrawerOpen(false);
-      toast.success("Student added successfully");
-    } else if (selectedStudent) {
-      updateStudent(selectedStudent.id, data);
-      setIsEditMode(false);
-      setSelectedStudent(null);
-      toast.success("Student profile updated");
-    }
-  };
-
-  // Student Form Fields component to reuse in Add/Edit
+// Student Form Fields component to reuse in Add/Edit
   const StudentFormFields = ({ initialData, readOnly }: { initialData?: Partial<Student>, readOnly?: boolean }) => {
     const Field = readOnly ? 
       ({ label, value }: { label: string, value: string }) => (
@@ -154,6 +100,61 @@ export default function StudentsView() {
       </div>
     );
   };
+
+export default function StudentsView() {
+  const { students, groups, addStudent, updateStudent } = useAppStore();
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [deptFilter, setDeptFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [groupFilter, setGroupFilter] = useState("");
+  
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  
+  const [isAddDrawerOpen, setIsAddDrawerOpen] = useState(false);
+
+  // Departments for filter
+  const departments = useMemo(() => Array.from(new Set(students.map(s => s.department))).filter(Boolean), [students]);
+
+  // Filtered Students
+  const filteredStudents = useMemo(() => {
+    return students.filter(s => {
+      if (deptFilter && s.department !== deptFilter) return false;
+      if (statusFilter && s.status !== statusFilter) return false;
+      if (groupFilter && !s.groupIds.includes(groupFilter)) return false;
+      
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return s.fullName.toLowerCase().includes(query) || 
+               s.rollNumber.toLowerCase().includes(query) ||
+               s.admissionNo.toLowerCase().includes(query);
+      }
+      return true;
+    });
+  }, [students, searchQuery, deptFilter, statusFilter, groupFilter]);
+
+  // Handle Save (Add/Edit)
+  const handleSaveStudent = (e: React.FormEvent<HTMLFormElement>, isNew: boolean) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries()) as any;
+    
+    // Default groupIds to [] if not provided
+    data.groupIds = selectedStudent?.groupIds || [];
+    
+    if (isNew) {
+      addStudent(data);
+      setIsAddDrawerOpen(false);
+      toast.success("Student added successfully");
+    } else if (selectedStudent) {
+      updateStudent(selectedStudent.id, data);
+      setIsEditMode(false);
+      setSelectedStudent(null);
+      toast.success("Student profile updated");
+    }
+  };
+
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto animate-in fade-in duration-500">
