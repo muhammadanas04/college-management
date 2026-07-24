@@ -132,6 +132,7 @@ export default function DashboardView() {
           delta={todaysAttendancePercent >= 80 ? "Good" : "Needs Attention"} 
           deltaDirection={todaysAttendancePercent >= 80 ? "up" : "down"}
           accentColor={todaysAttendancePercent >= 80 ? "#10b981" : "#f43f5e"}
+          sparklineData={attendanceTrendData.map(d => d.value)}
         />
         <StatCard 
           label="Fees Collected (Term)" 
@@ -148,7 +149,7 @@ export default function DashboardView() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card title="Attendance Trend (Last 7 Days)" className="lg:col-span-2">
           <div className="mt-4">
-            <BarChart data={attendanceTrendData} color="bg-blue-500" />
+            <BarChart data={attendanceTrendData} color="#3b82f6" />
           </div>
         </Card>
 

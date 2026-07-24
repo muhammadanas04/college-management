@@ -277,7 +277,7 @@ export default function AttendanceView() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <Card title={`Monthly Trend (${dateFilter.substring(0, 7)})`}>
           <div className="mt-4">
-            <BarChart data={monthlyChartData} color="bg-emerald-500" />
+            <BarChart data={monthlyChartData} color="#10b981" />
           </div>
         </Card>
 

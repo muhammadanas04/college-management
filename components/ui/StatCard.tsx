@@ -1,4 +1,6 @@
+"use client";
 import { cn } from "@/lib/utils";
+import { ResponsiveContainer, LineChart, Line } from "recharts";
 
 interface StatCardProps {
   label: string;
@@ -6,6 +8,7 @@ interface StatCardProps {
   delta?: string;
   deltaDirection?: "up" | "down";
   accentColor?: string;
+  sparklineData?: number[];
   className?: string;
 }
 
@@ -15,6 +18,7 @@ export function StatCard({
   delta,
   deltaDirection,
   accentColor,
+  sparklineData,
   className,
 }: StatCardProps) {
   return (
@@ -43,6 +47,15 @@ export function StatCard({
           </span>
         )}
       </div>
+      {sparklineData && sparklineData.length > 1 && (
+        <div className="h-8 mt-2 -mx-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={sparklineData.map((v, i) => ({ v, i }))}>
+              <Line type="monotone" dataKey="v" stroke={accentColor || "var(--primary)"} strokeWidth={1.5} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 }
