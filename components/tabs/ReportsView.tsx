@@ -7,6 +7,10 @@ import { Card } from "@/components/ui/Card";
 import { Select } from "@/components/ui/form/Select";
 import { pdf } from "@react-pdf/renderer";
 import { GenericReportTemplate } from "@/components/pdf/ReportTemplates";
+import { CertificateTemplate } from "@/components/pdf/CertificateTemplate";
+import { IdCardTemplate } from "@/components/pdf/IdCardTemplate";
+import { MarksheetTemplate } from "@/components/pdf/MarksheetTemplate";
+import { PdfPreviewModal } from "@/components/ui/PdfPreviewModal";
 import { FileBarChart, User, CheckSquare, CreditCard, BookOpen, UserCircle, Library, FileText, Award } from "lucide-react";
 
 const reportTypes = [
@@ -22,13 +26,16 @@ const reportTypes = [
 ];
 
 export default function ReportsView() {
-  const { students } = useAppStore();
+  const { students, attendance, feeCollections, results, subjects, bookIssues } = useAppStore();
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState<string | null>(null);
+  
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [pdfData, setPdfData] = useState<{ blob: Blob | null, filename: string }>({ blob: null, filename: "" });
 
   const selectedStudent = students.find(s => s.id === selectedStudentId);
 
-  const handleDownload = async (reportId: string, title: string) => {
+  const handleGenerate = async (reportId: string, title: string) => {
     if (!selectedStudent) {
       toast.warning("Select a student first");
       return;
@@ -37,28 +44,77 @@ export default function ReportsView() {
     setIsGenerating(reportId);
 
     try {
-      let textBody = "";
-      if (reportId === "bonafide") {
-        textBody = `This is to certify that ${selectedStudent.fullName}, son/daughter of ${selectedStudent.fathersName}, is a bonafide student of this institution studying in ${selectedStudent.course} (${selectedStudent.semesterOrYear}). To the best of our knowledge, they bear a good moral character.`;
-      } else if (reportId === "transfer") {
-        textBody = `This is to certify that ${selectedStudent.fullName} has left the institution. They were studying in ${selectedStudent.course}. All dues have been cleared.`;
-      } else if (reportId === "character") {
-        textBody = `This is to certify that ${selectedStudent.fullName} has been a student of this institution. During their tenure, their conduct and character were found to be satisfactory.`;
+      let doc: JSX.Element;
+
+      if (reportId === "student-profile") {
+        doc = <GenericReportTemplate title={title} student={selectedStudent} additionalRows={[
+          { label: "Date of Birth", value: selectedStudent.dob },
+          { label: "Blood Group", value: selectedStudent.bloodGroup },
+          { label: "Phone", value: selectedStudent.mobileNumber },
+          { label: "Email", value: selectedStudent.email },
+          { label: "Address", value: selectedStudent.address },
+          { label: "Father's Name", value: selectedStudent.fathersName },
+          { label: "Mother's Name", value: selectedStudent.mothersName },
+        ]} />;
+      } else if (reportId === "attendance") {
+        const studentAttendance = attendance.filter(a => a.studentId === selectedStudent.id);
+        const present = studentAttendance.filter(a => a.status === 'present').length;
+        const total = studentAttendance.length;
+        const percentage = total > 0 ? ((present / total) * 100).toFixed(2) : "0.00";
+        doc = <GenericReportTemplate title={title} student={selectedStudent} additionalRows={[
+          { label: "Total Classes", value: total.toString() },
+          { label: "Classes Attended", value: present.toString() },
+          { label: "Attendance Percentage", value: `${percentage}%` },
+        ]} />;
+      } else if (reportId === "fees") {
+        const studentFees = feeCollections.filter(f => f.studentId === selectedStudent.id);
+        const totalPaid = studentFees.reduce((sum, f) => sum + f.amount, 0);
+        doc = <GenericReportTemplate title={title} student={selectedStudent} additionalRows={[
+          { label: "Total Fees Paid", value: `₹${totalPaid.toLocaleString()}` },
+          { label: "Number of Transactions", value: studentFees.length.toString() },
+        ]} />;
+      } else if (reportId === "marksheet") {
+        const studentResult = results.find(r => r.studentId === selectedStudent.id);
+        if (!studentResult) {
+          toast.warning("No result found for this student");
+          setIsGenerating(null);
+          return;
+        }
+        doc = <MarksheetTemplate student={selectedStudent} result={studentResult} subjects={subjects} />;
+      } else if (reportId === "id-card") {
+        doc = <IdCardTemplate student={selectedStudent} />;
+      } else if (reportId === "library-card") {
+        const activeBooks = bookIssues.filter(b => b.studentId === selectedStudent.id && b.status !== 'returned');
+        doc = <GenericReportTemplate title={title} student={selectedStudent} additionalRows={[
+          { label: "Active Book Issues", value: activeBooks.length.toString() },
+          { label: "Library Status", value: activeBooks.length > 0 ? "Active" : "Clear" },
+        ]} />;
+      } else {
+        let textBody = "";
+        if (reportId === "bonafide") {
+          textBody = `This is to certify that ${selectedStudent.fullName}, son/daughter of ${selectedStudent.fathersName}, is a bonafide student of this institution studying in ${selectedStudent.course} (${selectedStudent.semesterOrYear}). To the best of our knowledge, they bear a good moral character.`;
+        } else if (reportId === "transfer") {
+          textBody = `This is to certify that ${selectedStudent.fullName} has left the institution. They were studying in ${selectedStudent.course}. All dues have been cleared.`;
+        } else if (reportId === "character") {
+          textBody = `This is to certify that ${selectedStudent.fullName} has been a student of this institution. During their tenure, their conduct and character were found to be satisfactory.`;
+        }
+        
+        doc = <CertificateTemplate 
+          title={title} 
+          student={selectedStudent} 
+          body={textBody} 
+          serialNumber={`CERT-${Math.floor(Math.random()*10000)}`} 
+          date={new Date().toLocaleDateString()} 
+        />;
       }
 
-      const doc = <GenericReportTemplate title={title} student={selectedStudent} textBody={textBody} />;
       const blob = await pdf(doc).toBlob();
-      
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
       const safeName = selectedStudent.fullName.replace(/\s+/g, '_');
-      a.download = `${safeName}_${selectedStudent.rollNumber}_${reportId}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      toast.success("PDF downloaded");
+      const generatedFilename = `${safeName}_${selectedStudent.rollNumber}_${reportId}.pdf`;
+      
+      setPdfData({ blob, filename: generatedFilename });
+      setPreviewModalOpen(true);
+      toast.success("PDF generated successfully");
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Failed to generate PDF");
@@ -100,7 +156,7 @@ export default function ReportsView() {
                   Generate and download the {report.title.toLowerCase()} as a PDF document.
                 </p>
                 <button
-                  onClick={() => handleDownload(report.id, report.title)}
+                  onClick={() => handleGenerate(report.id, report.title)}
                   disabled={!selectedStudentId || isGenerating === report.id}
                   className="mt-2 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 disabled:opacity-50 disabled:pointer-events-none"
                 >
@@ -111,6 +167,13 @@ export default function ReportsView() {
           )
         })}
       </div>
+
+      <PdfPreviewModal
+        open={previewModalOpen}
+        onClose={() => setPreviewModalOpen(false)}
+        blob={pdfData.blob}
+        filename={pdfData.filename}
+      />
     </div>
   );
 }

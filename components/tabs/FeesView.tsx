@@ -13,6 +13,7 @@ import { getStatusCategory } from "@/lib/status-colors";
 import { FeeStructureEntry, DueEntry, FeeCollection, Scholarship } from "@/types/fees";
 import { pdf } from "@react-pdf/renderer";
 import { ReceiptTemplate } from "@/components/pdf/ReceiptTemplate";
+import { platform } from "@/lib/platform";
 
 export default function FeesView() {
   const { 
@@ -71,12 +72,7 @@ export default function FeesView() {
         />
       ).toBlob();
       
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `receipt-${receiptNo}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
+      await platform.downloadFile(blob, `receipt-${receiptNo}.pdf`);
       toast.success("Fee collected — receipt downloaded");
     } catch (err) {
       toast.error("Failed to generate receipt PDF");
